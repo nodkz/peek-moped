@@ -6,6 +6,7 @@ Things this peek view provides:
 
 - Total number of Mongo commands called during the request
 - The duration of the calls made during the request
+- Profiling each command with app stacktrace
 
 ## Installation
 
