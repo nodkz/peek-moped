@@ -1,0 +1,73 @@
+<strong>
+  <span data-defer-to="<%= view.defer_key %>-duration">...</span>
+  /
+  <span data-defer-to="<%= view.defer_key %>-calls">...</span>
+  <a href="#" onclick="$('#moped_queries_log').slideToggle(); return false;">moped</a>
+</strong>
+
+<style>
+  #peek-moped-table {
+    color: #333;
+    font-weight: normal;
+    text-shadow: none;
+  }
+  #peek-moped-table td {
+    line-height: normal;
+  }
+  .peek-moped-num {
+    color: gray;
+  }
+  .peek-moped-code {
+    font-weight: bold;
+  }
+  .peek-moped-query-details, .peek-moped-query-stack {
+      display: none;
+  }
+  .peek-moped-query-opened {
+    background-color: #FFFFE0;
+    border: 2px solid #ffd495;
+    padding: 4px;
+  }
+  .peek-moped-query-opened .peek-moped-query-details, .peek-moped-query-opened .peek-moped-query-stack {
+    display: block;
+    white-space: pre;
+  }
+  .peek-moped-query-opened a {
+    font-weight: bold;
+  }
+  #moped_queries_log {
+    display:none;
+    position:absolute;
+  }
+</style>
+<div id="moped_queries_log">
+    <table cellpadding="3" id="peek-moped-table">
+    <% duration = view.duration %>
+    <% cmd_num = 0 %>
+    <% view.operations.each do |row| %>
+      <tr>
+        <td class="peek-moped-num"><%= row[0] %></td>
+        <td <%= row[1]/duration > 0.1 ? 'style=color:red':'' %>><%= "%.2fms" % (row[1] * 1000) %></td>
+        <td>
+          <% row[2].each do |cmd| %>
+            <div>
+              <% code_desc = view.op_code_info cmd.op_code %>
+              <span class="peek-moped-code" title="<%= code_desc[1] %>"><%= code_desc[0] %></span>
+              <a href="#" onclick="$(this).closest('div').toggleClass('peek-moped-query-opened'); return false;">
+                <%= cmd.full_collection_name %>
+              </a>
+              <div class="peek-moped-query-details"><%= cmd.to_yaml %></div>
+              <div class="peek-moped-query-stack"><b>APP STACK:</b><%= "\n#{row[3].join("\n")}" %></div>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </table>
+</div>
+<% if false %>
+<span data-defer-to="<%= view.defer_key %>-operations">...</span>
+<% end %>
+
+
+

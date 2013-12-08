@@ -1,0 +1,23 @@
+# -*- encoding: utf-8 -*-
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'peek-moped/version'
+
+Gem::Specification.new do |gem|
+  gem.name          = 'peek-moped'
+  gem.version       = Peek::Moped::VERSION
+  gem.authors       = ['Pavel Chertorogov']
+  gem.email         = ['pavel.chertorogov@gmail.com']
+  gem.description   = %q{Take a peek into the Moped and Mongoid commands made within your Rails application.}
+  gem.summary       = %q{Take a peek into the Moped and Mongoid commands made within your Rails application.}
+  gem.homepage      = 'https://github.com/nodkz/peek-moped'
+
+  gem.files         = `git ls-files`.split($/)
+  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.require_paths = ['lib']
+
+  gem.add_dependency 'peek'
+  gem.add_dependency 'moped', '>= 1.5.1'
+  gem.add_dependency 'atomic', '>= 1.0.0'
+end
