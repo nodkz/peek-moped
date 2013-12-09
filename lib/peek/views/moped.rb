@@ -55,17 +55,35 @@ module Peek
       end
 
       def cmd_collection_name cmd
+        if %w(admin config local).include? cmd.database
+          name = "<span class=\"peek-moped-system-db\">#{cmd.database}</span>."
+        else
+          name = ''
+        end
+
         if cmd.collection == '$cmd'
           if cmd.selector.has_key? :getlasterror
-            'getLastError()'
+            name << 'getLastError()'
           elsif cmd.selector.has_key? :count
-            "#{cmd.selector[:count]}.count()"
+            name << "#{cmd.selector[:count]}.count()"
+          elsif cmd.selector.has_key? :aggregate
+            name << "#{cmd.selector[:aggregate]}.aggregate(#{cmd.selector[:pipeline].map{|p| p.keys}.flatten.join(', ')})"
+          elsif cmd.selector.has_key? :mapreduce
+            name << "#{cmd.selector[:mapreduce]}.mapReduce(#{cmd.selector[:out].to_s})"
+          elsif cmd.selector.has_key? :findAndModify
+            name << "#{cmd.selector[:findAndModify]}.findAndModify()"
+          elsif cmd.selector.has_key? :geoNear
+            name << "#{cmd.selector[:geoNear]}.geoNear()"
+          elsif cmd.selector.has_key? :ismaster
+            name << "isMaster()"
           else
-            '$cmd'
+            name << '$cmd'
           end
         else
-          cmd.collection
+          name << cmd.collection
         end
+
+        name
       end
 
       def formatted_duration
