@@ -21,7 +21,7 @@
     font-weight: bold;
   }
   .peek-moped-query-details, .peek-moped-query-stack {
-      display: none;
+    display: none;
   }
   .peek-moped-query-opened {
     background-color: #FFFFE0;
@@ -40,6 +40,10 @@
     position:absolute;
     background-color: #ffffff;
   }
+  .peek-moped-system-db {
+    font-style: italic;
+    color: darkred;
+  }
 </style>
 <div id="moped_queries_log">
     <table cellpadding="3" id="peek-moped-table">
@@ -55,9 +59,11 @@
               <% code_desc = view.op_code_info cmd.op_code %>
               <span class="peek-moped-code" title="<%= code_desc[1] %>"><%= code_desc[0] %></span>
               <a href="#" onclick="$(this).closest('div').toggleClass('peek-moped-query-opened'); return false;">
-                <%= view.cmd_collection_name cmd %>
+                <%= raw view.cmd_collection_name cmd %>
               </a>
-              <div class="peek-moped-query-details"><%= cmd.to_yaml %></div>
+              <div class="peek-moped-query-details"><%=
+                cmd.to_yaml.gsub(/\!ruby\/object\:Moped\:\:BSON\:\:ObjectId\s*raw_data:.*\n\s*([^\n]*)/) {|capture| "ObjectId(\"#{$1.unpack("m")[0].unpack("H*")[0].force_encoding(Moped::BSON::UTF8_ENCODING)}\")"}
+              %></div>
               <div class="peek-moped-query-stack"><b>APP STACK:</b><%= "\n#{row[3].join("\n")}" %></div>
             </div>
           <% end %>
