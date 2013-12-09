@@ -55,7 +55,7 @@
               <% code_desc = view.op_code_info cmd.op_code %>
               <span class="peek-moped-code" title="<%= code_desc[1] %>"><%= code_desc[0] %></span>
               <a href="#" onclick="$(this).closest('div').toggleClass('peek-moped-query-opened'); return false;">
-                <%= cmd.full_collection_name %>
+                <%= view.cmd_collection_name cmd %>
               </a>
               <div class="peek-moped-query-details"><%= cmd.to_yaml %></div>
               <div class="peek-moped-query-stack"><b>APP STACK:</b><%= "\n#{row[3].join("\n")}" %></div>

@@ -54,6 +54,20 @@ module Peek
         end
       end
 
+      def cmd_collection_name cmd
+        if cmd.collection == '$cmd'
+          if cmd.selector.has_key? :getlasterror
+            'getLastError()'
+          elsif cmd.selector.has_key? :count
+            "#{cmd.selector[:count]}.count()"
+          else
+            '$cmd'
+          end
+        else
+          cmd.collection
+        end
+      end
+
       def formatted_duration
         ms = duration * 1000
         if ms >= 1000
