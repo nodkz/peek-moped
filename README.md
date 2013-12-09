@@ -2,6 +2,8 @@
 
 Take a peek into the Mongoid and Moped commands made within your Rails application.
 
+![Preview](/screenshot.png)
+
 Things this peek view provides:
 
 - Total number of Mongo commands called during the request
