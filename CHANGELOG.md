@@ -1,3 +1,6 @@
+# 1.0.3
+- Fix undefined method 'database' for Moped::Protocol::KillCursors
+
 # 1.0.2
 
 - Write ObjectId in mongodb query format (previously was in binary)
